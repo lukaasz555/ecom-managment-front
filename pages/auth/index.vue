@@ -1,8 +1,5 @@
 <template>
 	<NuxtLayout name="auth">
-		<h1>/AUTH</h1>
-		<Button buttonText="Login" />
+		<p class="text-[#000]">/auth</p>
 	</NuxtLayout>
 </template>
-
-<script setup lang="ts"></script>
