@@ -10,8 +10,16 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxtjs/google-fonts": "^3.2.0",
+    "@primevue/themes": "^4.0.7",
     "nuxt": "^3.13.0",
+    "primeicons": "^7.0.0",
+    "primevue": "^4.0.7",
     "vue": "latest",
     "vue-router": "latest"
+  },
+  "devDependencies": {
+    "@primevue/nuxt-module": "^4.0.7",
+    "sass-embedded": "^1.78.0"
   }
 }
