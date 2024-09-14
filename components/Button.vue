@@ -61,7 +61,6 @@ const props = defineProps({
 });
 
 function onClick() {
-	console.log('Button clicked');
 	emit('click');
 }
 </script>
