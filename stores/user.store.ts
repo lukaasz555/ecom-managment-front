@@ -1,12 +1,6 @@
-import type { RolesEnum } from '~/enums/roles.enum';
-import type { PrivilegesType } from '~/types/privileges.type';
-
-interface UserPayload {
-	id: number;
-	email: string;
-	role: RolesEnum;
-	privileges: PrivilegesType;
-}
+import type { UserPayload } from '~/interfaces/user-payload';
+import { getUserPayloadFromToken } from '~/helpers';
+import { LocalStorageEnum } from '~/enums';
 
 interface UserStore {
 	token: string | null;
@@ -42,15 +36,36 @@ export const useUserStore = defineStore('userStore', {
 					},
 				}
 			);
+			console.log('login error ->', error);
 			if (error) this.isError = true;
 			if (data.value && typeof data.value === 'string') {
-				// todo: retrieve data from token & save to ls
 				this.token = data.value;
+				this.user = getUserPayloadFromToken(data.value);
+				localStorage.setItem(LocalStorageEnum.APP_TOKEN, this.token);
+				localStorage.setItem(
+					LocalStorageEnum.APP_USER,
+					JSON.stringify(this.user)
+				);
+				this.isError = false;
 			}
 			this.isLoading = false;
 		},
+		getUserFromLocalStorage(): void {
+			const token = localStorage.getItem(LocalStorageEnum.APP_TOKEN);
+			const user = localStorage.getItem(LocalStorageEnum.APP_USER);
+			if (token && user) {
+				this.token = token;
+				this.user = JSON.parse(user);
+				this.isError = false;
+			}
+		},
+		logout(): void {
+			this.$reset();
+			localStorage.removeItem(LocalStorageEnum.APP_TOKEN);
+			localStorage.removeItem(LocalStorageEnum.APP_USER);
+		},
 	},
 	getters: {
-		isLoggedIn: (state) => !!state.token,
+		isLoggedIn: (state) => !!state.token && !!state.user,
 	},
 });
