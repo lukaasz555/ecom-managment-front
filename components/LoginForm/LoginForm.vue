@@ -14,9 +14,9 @@
 			<Button
 				type="submit"
 				buttonText="Login"
-				:disabled="loading"
+				:disabled="userStore.isLoading"
 				is-full-width
-				:loading="loading"
+				:loading="userStore.isLoading"
 				@click="onSubmit"
 			/>
 		</section>
@@ -25,7 +25,7 @@
 				<Button
 					buttonText="Forgot Password?"
 					link
-					:disabled="loading"
+					:disabled="userStore.isLoading"
 					size="small"
 					style="padding: 5px 10px; font-size: 13px"
 					@click="redirectToForgotPassword"
@@ -38,13 +38,14 @@
 <script setup lang="ts">
 import Input from '../Input.vue';
 import Button from '../Button.vue';
+import { useUserStore } from '~/stores/user.store';
 
 const loginForm = reactive({
 	email: 'init',
 	password: '',
 });
 
-const loading = ref(false);
+const userStore = useUserStore();
 
 function redirectToForgotPassword() {
 	const router = useRouter();
@@ -52,17 +53,12 @@ function redirectToForgotPassword() {
 }
 
 async function onSubmit(): Promise<void> {
-	loading.value = true;
-	const { data, pending, error, refresh } = await useFetch(
-		'http://localhost:4004/api/v1/management/auth/signin',
-		{
-			method: 'POST',
-			body: {
-				...loginForm,
-			},
+	await userStore.login(loginForm).then(() => {
+		if (userStore.isLoggedIn) {
+			const router = useRouter();
+			router.push('/');
 		}
-	);
-	loading.value = false;
+	});
 }
 </script>
 
