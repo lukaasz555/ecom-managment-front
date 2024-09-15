@@ -15,7 +15,7 @@ const router = useRouter();
 const userStore = useUserStore();
 
 // Temp. includes 'cuz not handling forgot-password yet
-if (route.path.includes('auth')) {
-	userStore.isLoggedIn ? router.push('/') : router.push('/auth/login');
-}
+// if (route.path.includes('auth')) {
+// 	userStore.isLoggedIn ? router.push('/dashboard') : router.push('/auth/login');
+// }
 </script>
