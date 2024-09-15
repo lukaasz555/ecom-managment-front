@@ -1,5 +1,6 @@
 <template>
 	<InputText
+		v-model="inputValue"
 		:placeholder="placeholder"
 		variant="filled"
 		:fluid="isFullWidth"
@@ -10,6 +11,10 @@
 
 <script setup lang="ts">
 import InputText from 'primevue/inputtext';
+
+const emit = defineEmits<{
+	(e: 'update:modelValue', val: string): void;
+}>();
 
 const props = defineProps({
 	modelValue: {
@@ -31,6 +36,13 @@ const props = defineProps({
 	type: {
 		type: String as () => 'text' | 'password',
 		default: 'text',
+	},
+});
+
+const inputValue = computed({
+	get: () => props.modelValue,
+	set: (value: string) => {
+		emit('update:modelValue', value);
 	},
 });
 </script>

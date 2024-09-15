@@ -3,7 +3,7 @@
 		<header>
 			<h1>Login</h1>
 		</header>
-		<section class="">
+		<section>
 			<Input v-model="loginForm.email" placeholder="E-mail" is-full-width />
 			<Input
 				v-model="loginForm.password"
@@ -14,8 +14,10 @@
 			<Button
 				type="submit"
 				buttonText="Login"
-				:disabled="false"
+				:disabled="loading"
 				is-full-width
+				:loading="loading"
+				@click="onSubmit"
 			/>
 		</section>
 		<section>
@@ -23,6 +25,7 @@
 				<Button
 					buttonText="Forgot Password?"
 					link
+					:disabled="loading"
 					size="small"
 					style="padding: 5px 10px; font-size: 13px"
 					@click="redirectToForgotPassword"
@@ -37,13 +40,29 @@ import Input from '../Input.vue';
 import Button from '../Button.vue';
 
 const loginForm = reactive({
-	email: '',
+	email: 'init',
 	password: '',
 });
+
+const loading = ref(false);
 
 function redirectToForgotPassword() {
 	const router = useRouter();
 	router.push('/auth/forgot-password');
+}
+
+async function onSubmit(): Promise<void> {
+	loading.value = true;
+	const { data, pending, error, refresh } = await useFetch(
+		'http://localhost:4004/api/v1/management/auth/signin',
+		{
+			method: 'POST',
+			body: {
+				...loginForm,
+			},
+		}
+	);
+	loading.value = false;
 }
 </script>
 
