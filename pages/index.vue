@@ -15,6 +15,10 @@
 import { useUserStore } from '~/stores/user.store';
 import Button from '~/components/Button.vue';
 
+definePageMeta({
+	middleware: 'auth-check',
+});
+
 const userStore = useUserStore();
 
 function redirectToLogin(): void {
