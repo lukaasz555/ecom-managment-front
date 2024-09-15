@@ -20,7 +20,7 @@
 				@click="onSubmit"
 			/>
 		</section>
-		<section>
+		<!-- <section>
 			<div class="forgot-password">
 				<Button
 					buttonText="Forgot Password?"
@@ -31,7 +31,7 @@
 					@click="redirectToForgotPassword"
 				/>
 			</div>
-		</section>
+		</section> -->
 	</div>
 </template>
 
@@ -41,16 +41,16 @@ import Button from '../Button.vue';
 import { useUserStore } from '~/stores/user.store';
 
 const loginForm = reactive({
-	email: 'init',
+	email: '',
 	password: '',
 });
 
 const userStore = useUserStore();
 
-function redirectToForgotPassword() {
-	const router = useRouter();
-	router.push('/auth/forgot-password');
-}
+// function redirectToForgotPassword() {
+// 	const router = useRouter();
+// 	router.push('/auth/forgot-password');
+// }
 
 async function onSubmit(): Promise<void> {
 	await userStore.login(loginForm).then(() => {
