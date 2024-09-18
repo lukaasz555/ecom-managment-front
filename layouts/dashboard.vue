@@ -1,7 +1,7 @@
 <template>
 	<div class="dashboard__wrapper">
 		<div class="card flex justify-space-between" style="border: 1px solid red">
-			<NavigationDrawer />
+			<Navbar />
 			<main>
 				<NuxtPage />
 			</main>
@@ -11,7 +11,8 @@
 </template>
 
 <script setup lang="ts">
-import NavigationDrawer from '~/components/Drawer/navigation-drawer.vue';
+import Navbar from '~/components/Navbar/Navbar.vue';
+import 'primeicons/primeicons.css';
 </script>
 
 <style lang="scss">
