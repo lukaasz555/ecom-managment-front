@@ -68,5 +68,11 @@ export const useUserStore = defineStore('userStore', {
 	},
 	getters: {
 		isLoggedIn: (state) => !!state.token && !!state.user,
+		nameAndSurname: (state) => {
+			// * it's just for a while -> need to change token payload on be
+			if (state.user) {
+				return 'Test User';
+			}
+		},
 	},
 });
