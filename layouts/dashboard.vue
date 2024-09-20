@@ -1,17 +1,21 @@
 <template>
-	<div class="dashboard__wrapper">
-		<div class="card flex justify-space-between" style="border: 1px solid red">
+	<div class="dashboard__wrapper" style="border: 1px solid blue">
+		<div
+			class="card flex justify-space-between"
+			style="height: 100%; border: 1px solid red"
+		>
 			<Navbar />
 			<main>
 				<NuxtPage />
 			</main>
 		</div>
-		<footer>FOOTER</footer>
+		<Footer />
 	</div>
 </template>
 
 <script setup lang="ts">
 import Navbar from '~/components/Navbar/Navbar.vue';
+import Footer from '~/components/Footer/Footer.vue';
 import 'primeicons/primeicons.css';
 </script>
 
@@ -38,18 +42,16 @@ h6 {
 	font-family: 'Montserrat', sans-serif;
 }
 
-.auth__wrapper {
+.dashboard__wrapper {
 	background: #ededed;
 	display: flex;
-	justify-content: center;
-	align-items: center;
+	flex-direction: column;
+	justify-content: space-between;
 	min-height: 100vh;
 
 	main {
-		background: #f7f7f7;
-		padding: 40px;
-		box-shadow: 4px 8px 22px rgba(0, 0, 0, 0.1);
-		border-radius: var(--p-border-radius-lg);
+		flex-grow: 1;
+		min-height: 100%;
 	}
 }
 </style>
