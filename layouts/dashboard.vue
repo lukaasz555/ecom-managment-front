@@ -1,9 +1,6 @@
 <template>
-	<div class="dashboard__wrapper" style="border: 1px solid blue">
-		<div
-			class="card flex justify-space-between"
-			style="height: 100%; border: 1px solid red"
-		>
+	<div class="dashboard__wrapper">
+		<div class="card flex justify-space-between" style="height: 100%">
 			<Navbar />
 			<main>
 				<NuxtPage />
@@ -52,6 +49,7 @@ h6 {
 	main {
 		flex-grow: 1;
 		min-height: 100%;
+		padding: 0.75rem 0.5rem;
 	}
 }
 </style>
