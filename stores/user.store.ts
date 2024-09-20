@@ -36,7 +36,6 @@ export const useUserStore = defineStore('userStore', {
 					},
 				}
 			);
-			console.log('login error ->', error);
 			if (error) this.isError = true;
 			if (data.value && typeof data.value === 'string') {
 				this.token = data.value;
@@ -50,7 +49,8 @@ export const useUserStore = defineStore('userStore', {
 			}
 			this.isLoading = false;
 		},
-		getUserFromLocalStorage(): void {
+		async getUserFromLocalStorage(): Promise<void> {
+			this.isLoading = true;
 			const token = localStorage.getItem(LocalStorageEnum.APP_TOKEN);
 			const user = localStorage.getItem(LocalStorageEnum.APP_USER);
 			if (token && user) {
@@ -58,6 +58,7 @@ export const useUserStore = defineStore('userStore', {
 				this.user = JSON.parse(user);
 				this.isError = false;
 			}
+			this.isLoading = false;
 		},
 		logout(): void {
 			this.$reset();
@@ -67,5 +68,11 @@ export const useUserStore = defineStore('userStore', {
 	},
 	getters: {
 		isLoggedIn: (state) => !!state.token && !!state.user,
+		nameAndSurname: (state) => {
+			// * it's just for a while -> need to change token payload on be
+			if (state.user) {
+				return 'Test User';
+			}
+		},
 	},
 });
