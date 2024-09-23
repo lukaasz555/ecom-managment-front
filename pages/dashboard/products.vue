@@ -21,60 +21,16 @@
 </template>
 
 <script setup lang="ts">
-import type { Product } from '~/interfaces/product';
 import { useProductsStore } from '~/stores/products.store';
 import ActionButtons from '~/components/action-buttons.vue';
-import type { TableColumn } from '~/interfaces/table-column';
+import { productsTableColumns } from '~/features/products/products-table-columns';
 
 const productsStore = useProductsStore();
-productsStore.fetchProducts();
-
 const { loading, products } = storeToRefs(productsStore);
 
-const productsTableColumns: TableColumn<Product>[] = [
-	{
-		field: 'title',
-		header: 'Title',
-	},
-	{
-		field: 'price',
-		header: 'Price',
-		style: {
-			'text-align': 'center',
-		},
-	},
-	{
-		field: 'categoryId',
-		header: 'Category',
-		style: {
-			'text-align': 'center',
-		},
-	},
-	{
-		field: 'stock',
-		header: 'Stock',
-		style: {
-			'text-align': 'center',
-		},
-	},
-	{
-		field: 'isAvailable',
-		header: 'Available',
-		style: {
-			'text-align': 'center',
-		},
-	},
-	{
-		field: 'id',
-		header: 'Actions',
-		style: {
-			width: '100%',
-			display: 'flex',
-			'align-items': 'center',
-			'justify-content': 'flex-end',
-		},
-	},
-];
+onMounted(() => {
+	productsStore.fetchProducts();
+});
 </script>
 
 <style lang="scss">
