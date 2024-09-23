@@ -6,4 +6,6 @@ export interface UserPayload {
 	email: string;
 	role: RolesEnum;
 	privileges: PrivilegesType;
+	name: string;
+	lastname: string;
 }

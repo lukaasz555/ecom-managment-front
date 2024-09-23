@@ -64,14 +64,14 @@ export const useUserStore = defineStore('userStore', {
 			this.$reset();
 			localStorage.removeItem(LocalStorageEnum.APP_TOKEN);
 			localStorage.removeItem(LocalStorageEnum.APP_USER);
+			window.location.reload();
 		},
 	},
 	getters: {
 		isLoggedIn: (state) => !!state.token && !!state.user,
 		nameAndSurname: (state) => {
-			// * it's just for a while -> need to change token payload on be
 			if (state.user) {
-				return 'Test User';
+				return `${state.user.name} ${state.user.lastname}`;
 			}
 		},
 	},
