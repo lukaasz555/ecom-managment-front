@@ -3,15 +3,16 @@
 		<Button
 			size="small"
 			severity="secondary"
-			icon="pi pi-fw pi-trash"
+			icon="pi pi-fw pi-pencil"
 			class="action-buttons__item"
+			@click="emit('onEditClick')"
 		/>
-
 		<Button
 			size="small"
 			severity="secondary"
-			icon="pi pi-fw pi-pencil"
+			icon="pi pi-fw pi-trash"
 			class="action-buttons__item"
+			@click="emit('onDeleteClick')"
 		/>
 	</div>
 </template>

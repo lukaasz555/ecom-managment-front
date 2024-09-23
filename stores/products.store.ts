@@ -62,5 +62,26 @@ export const useProductsStore = defineStore({
 				this.loading = false;
 			}
 		},
+		async deleteProduct(productId: number): Promise<void> {
+			try {
+				const token = useUserStore().token;
+				await $fetch(
+					`http://localhost:4004/api/v1/management/products/${productId}`,
+					{
+						method: 'DELETE',
+						headers: {
+							'Content-Type': 'application/json',
+							Authorization: `Bearer ${token ?? ''}`,
+						},
+					}
+				);
+
+				this.products = this.products.filter(
+					(product) => product.id !== productId
+				);
+			} catch (err) {
+				this.isError = true;
+			}
+		},
 	},
 });

@@ -1,5 +1,6 @@
 <template>
 	<NuxtPage />
+	<ConfirmDialog />
 </template>
 
 <script setup lang="ts">
