@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import type { Product } from '~/interfaces/product';
 import { useUserStore } from './user.store';
 import type { IPaginationResult } from '~/interfaces/pagination-result';
+import { ProductsService } from '~/features/products/products.service';
 
 interface ProductsStore {
 	product: Product | null;
@@ -43,18 +44,24 @@ export const useProductsStore = defineStore({
 			// 	});
 
 			try {
-				const token = useUserStore().token;
-				const apiResponse: IPaginationResult<Product> = await $fetch(
-					'http://localhost:4004/api/v1/management/products',
-					{
-						method: 'GET',
-						headers: {
-							'Content-Type': 'application/json',
-							Authorization: `Bearer ${token ?? ''}`,
-						},
-					}
-				);
+				// const token = useUserStore().token;
+				// const apiUrl = useRuntimeConfig().public.apiUrl;
 
+				// const apiResponse: IPaginationResult<Product> = await $fetch(
+				// 	`${apiUrl}/management/products`,
+				// 	{
+				// 		method: 'GET',
+				// 		headers: {
+				// 			'Content-Type': 'application/json',
+				// 			Authorization: `Bearer ${token ?? ''}`,
+				// 		},
+				// 	}
+				// );
+				// this.products = apiResponse.items;
+
+				// const productsService = new ProductsService();
+				// productsService.getProducts();
+				const apiResponse = await ProductsService.getProducts();
 				this.products = apiResponse.items;
 			} catch (err) {
 				this.isError = true;
