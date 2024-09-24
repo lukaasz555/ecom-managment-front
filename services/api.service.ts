@@ -1,4 +1,5 @@
 import { useUserStore } from '~/stores/user.store';
+import { Message, useGlobalStore } from '~/stores/global.store';
 
 export class Filters {
 	page = 1;
@@ -31,6 +32,10 @@ export class ApiService {
 			return response;
 		} catch (err) {
 			console.log('getData error', err);
+
+			const errorMessage = new Message('Something went wrong', 'Error');
+			useGlobalStore().addMessage(errorMessage);
+
 			throw new Error('apiService getData error');
 		}
 	}
