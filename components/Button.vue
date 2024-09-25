@@ -25,7 +25,7 @@ const props = defineProps({
 	},
 	buttonText: {
 		type: String,
-		default: 'button x',
+		default: 'Confirm',
 	},
 	disabled: {
 		type: Boolean,

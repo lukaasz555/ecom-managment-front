@@ -15,12 +15,22 @@
 			</template>
 		</Column>
 	</DataTable>
+	<Paginator
+		v-model="filtersData.page"
+		:rows="filtersData.limit"
+		:totalRecords="filtersData.totalRecords"
+		:rowsPerPageOptions="[5, 10, 15, 20]"
+		@page="filtersData.page = $event.page + 1"
+		@update:rows="filtersData.limit = $event"
+	/>
 </template>
 
 <script setup lang="ts">
+import { watch, onMounted } from 'vue';
 import { productsTableColumns } from '../products-table-columns';
 import { useProductsStore } from '~/stores/products.store';
 import { useConfirm } from 'primevue/useconfirm';
+import { ProductsFilters } from '../products.service';
 
 const emit = defineEmits<{
 	(e: 'deleteProduct', productId: number): void;
@@ -29,6 +39,8 @@ const emit = defineEmits<{
 
 const productsStore = useProductsStore();
 const { loading, products } = storeToRefs(productsStore);
+
+const filtersData = ref(new ProductsFilters());
 
 const confirm = useConfirm();
 
@@ -49,6 +61,12 @@ function deleteProduct(productId: number) {
 		reject: () => {},
 	});
 }
+
+watch(
+	() => [filtersData.value.page, filtersData.value.limit],
+	() => productsStore.fetchProducts(filtersData.value),
+	{ immediate: true }
+);
 </script>
 
 <style lang="scss">

@@ -18,8 +18,4 @@ async function editProductHandler(productId: number): Promise<void> {
 async function deleteProductHandler(productId: number): Promise<void> {
 	await productsStore.deleteProduct(productId);
 }
-
-onMounted(() => {
-	productsStore.fetchProducts();
-});
 </script>

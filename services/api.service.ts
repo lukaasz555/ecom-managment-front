@@ -4,6 +4,7 @@ import { Message, useGlobalStore } from '~/stores/global.store';
 export class Filters {
 	page = 1;
 	limit = 10;
+	totalRecords = 0;
 }
 
 export class ApiService {
