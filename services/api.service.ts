@@ -5,6 +5,27 @@ export class Filters {
 	page = 1;
 	limit = 10;
 	totalRecords = 0;
+	totalPages = 0;
+
+	setPage(pageNumber: number) {
+		this.page = pageNumber;
+	}
+
+	setLimit(limit: number) {
+		this.limit = limit;
+	}
+
+	onNextPage() {
+		if (this.page < this.totalPages) {
+			this.page++;
+		}
+	}
+
+	onPrevPage() {
+		if (this.page > 1) {
+			this.page--;
+		}
+	}
 }
 
 export class ApiService {

@@ -29,6 +29,7 @@ export const useProductsStore = defineStore({
 			try {
 				const apiResponse = await ProductsService.getProducts(filtersData);
 				filtersData.totalRecords = apiResponse.meta.totalRecords;
+				filtersData.totalPages = apiResponse.meta.totalPages;
 				this.products = apiResponse.items;
 			} catch (err) {
 				this.isError = true;
