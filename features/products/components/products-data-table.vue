@@ -17,16 +17,16 @@
 	</DataTable>
 	<Paginator
 		v-model="filtersData.page"
+		v-model:first="firstElement"
 		:rows="filtersData.limit"
 		:totalRecords="filtersData.totalRecords"
 		:rowsPerPageOptions="[5, 10, 15, 20]"
-		@page="filtersData.page = $event.page + 1"
-		@update:rows="filtersData.limit = $event"
+		@page="handlePageChange($event.page + 1)"
+		@update:rows="handleLimitChange($event)"
 	/>
 </template>
 
 <script setup lang="ts">
-import { watch, onMounted } from 'vue';
 import { productsTableColumns } from '../products-table-columns';
 import { useProductsStore } from '~/stores/products.store';
 import { useConfirm } from 'primevue/useconfirm';
@@ -38,11 +38,10 @@ const emit = defineEmits<{
 }>();
 
 const productsStore = useProductsStore();
+const confirm = useConfirm();
 const { loading, products } = storeToRefs(productsStore);
 
 const filtersData = ref(new ProductsFilters());
-
-const confirm = useConfirm();
 
 function deleteProduct(productId: number) {
 	confirm.require({
@@ -62,11 +61,12 @@ function deleteProduct(productId: number) {
 	});
 }
 
-watch(
-	() => [filtersData.value.page, filtersData.value.limit],
-	() => productsStore.fetchProducts(filtersData.value),
-	{ immediate: true }
-);
+const { stopWatch, handlePageChange, handleLimitChange, firstElement } =
+	usePagination(filtersData, productsStore.fetchProducts);
+
+onUnmounted(() => {
+	stopWatch();
+});
 </script>
 
 <style lang="scss">
