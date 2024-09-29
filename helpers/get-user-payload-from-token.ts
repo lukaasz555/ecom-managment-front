@@ -8,7 +8,9 @@ export function getUserPayloadFromToken(token: string): UserPayload {
 		userPayload.id &&
 		userPayload.email &&
 		userPayload.role &&
-		userPayload.privileges
+		userPayload.privileges &&
+		userPayload.name &&
+		userPayload.lastname
 	) {
 		return userPayload as UserPayload;
 	}

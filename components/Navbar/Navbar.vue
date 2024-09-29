@@ -5,6 +5,7 @@
 				v-ripple
 				class="flex items-center"
 				v-bind="props.action"
+				ariia-label="item.label"
 				@click="navigate(item)"
 			>
 				<span :class="item.icon" />
