@@ -17,12 +17,12 @@
 	</DataTable>
 	<Paginator
 		v-model="filtersData.page"
-		v-model:first="firstElement"
+		:first="filtersData.offset"
 		:rows="filtersData.limit"
 		:totalRecords="filtersData.totalRecords"
 		:rowsPerPageOptions="[5, 10, 15, 20]"
-		@page="handlePageChange($event.page + 1)"
-		@update:rows="handleLimitChange($event)"
+		:page-count="filtersData.totalPages"
+		@page="onPageChange($event)"
 	/>
 </template>
 
@@ -61,12 +61,10 @@ function deleteProduct(productId: number) {
 	});
 }
 
-const { stopWatch, handlePageChange, handleLimitChange, firstElement } =
-	usePagination(filtersData, productsStore.fetchProducts);
-
-onUnmounted(() => {
-	stopWatch();
-});
+const { onPageChange } = usePagination(
+	filtersData,
+	productsStore.fetchProducts
+);
 </script>
 
 <style lang="scss">

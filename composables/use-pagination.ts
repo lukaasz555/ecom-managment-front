@@ -1,61 +1,62 @@
+import type { PageState } from 'primevue/paginator';
 import type { WatchStopHandle } from 'vue';
 import type { Filters } from '~/services/api.service';
 
-const setInitDataFromQuery = <T extends Filters>(filtersData: Ref<T>) => {
+const getDataFromQuery = <T extends Filters>(filtersData: Ref<T>) => {
 	const route = useRoute();
 	const page = route.query.page;
 	const limit = route.query.limit;
 
-	// ? replace with for of?
 	if (page && !isNaN(Number(page))) {
 		filtersData.value.page = Number(page);
 	}
 	if (limit && !isNaN(Number(limit))) {
 		filtersData.value.limit = Number(limit);
 	}
+	filtersData.value.offset =
+		(filtersData.value.page - 1) * filtersData.value.limit;
 };
 
-// * Filters -> PaginationData?
+function onPageStateChange(newPageState: PageState, oldPageState: PageState) {
+	if (newPageState.rows === oldPageState.rows) return;
+
+	newPageState.page = oldPageState.page;
+	newPageState.first = (newPageState.page - 1) * newPageState.rows;
+}
+
 export const usePagination = <T extends Filters>(
 	data: Ref<T>,
 	handler: (value: T) => Promise<void>
 ) => {
-	setInitDataFromQuery(data);
-	let stopWatch: WatchStopHandle = () => {};
+	const route = useRoute();
+	const router = useRouter();
+	const prevState = ref<PageState | null>(null);
 
-	const handlePageChange = (page: number) => {
-		data.value.setPage(page);
-	};
-	const handleLimitChange = (limit: number) => {
-		data.value.setLimit(limit);
-	};
-	const handleNextPage = () => data.value.onNextPage();
-	const handlePrevPage = () => data.value.onPrevPage();
+	function onPageChange(newPageState: PageState): void {
+		if (prevState.value) {
+			onPageStateChange(newPageState, prevState.value);
+		}
 
-	const firstElement = computed(() => (data.value.page - 1) * data.value.limit);
+		router.push({
+			query: {
+				...route.query,
+				page: String(newPageState.page + 1),
+				limit: String(newPageState.rows),
+			},
+		});
+		prevState.value = newPageState;
+	}
 
-	stopWatch = watch(
-		() => data.value,
-		() => {
-			const router = useRouter();
-
-			router.push({
-				query: {
-					page: data.value.page,
-					limit: data.value.limit,
-				},
-			});
-			handler(data.value);
+	watch(
+		() => route.query,
+		async () => {
+			getDataFromQuery(data);
+			await handler(data.value);
 		},
 		{ deep: true, immediate: true }
 	);
 
 	return {
-		stopWatch,
-		handlePageChange,
-		handleLimitChange,
-		handleNextPage,
-		handlePrevPage,
-		firstElement,
+		onPageChange,
 	};
 };
