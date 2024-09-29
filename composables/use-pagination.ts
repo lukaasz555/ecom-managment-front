@@ -1,5 +1,4 @@
 import type { PageState } from 'primevue/paginator';
-import type { WatchStopHandle } from 'vue';
 import type { Filters } from '~/services/api.service';
 
 const getDataFromQuery = <T extends Filters>(filtersData: Ref<T>) => {
@@ -17,7 +16,10 @@ const getDataFromQuery = <T extends Filters>(filtersData: Ref<T>) => {
 		(filtersData.value.page - 1) * filtersData.value.limit;
 };
 
-function onPageStateChange(newPageState: PageState, oldPageState: PageState) {
+function onPageStateLimitChange<T extends Filters>(
+	newPageState: PageState,
+	oldPageState: PageState
+) {
 	if (newPageState.rows === oldPageState.rows) return;
 
 	newPageState.page = oldPageState.page;
@@ -34,7 +36,7 @@ export const usePagination = <T extends Filters>(
 
 	function onPageChange(newPageState: PageState): void {
 		if (prevState.value) {
-			onPageStateChange(newPageState, prevState.value);
+			onPageStateLimitChange(newPageState, prevState.value);
 		}
 
 		router.push({
