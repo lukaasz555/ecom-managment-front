@@ -19,4 +19,13 @@ export class ProductsService extends ApiService {
 
 		return apiRes;
 	}
+
+	static async getProduct(productId: number) {
+		const apiService = new ApiService();
+		const apiRes = await apiService.getData<Product>(
+			'management',
+			`products/${productId}`
+		);
+		return apiRes;
+	}
 }

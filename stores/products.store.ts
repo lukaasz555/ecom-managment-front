@@ -37,6 +37,17 @@ export const useProductsStore = defineStore({
 				this.loading = false;
 			}
 		},
+		async fetchProduct(productId: number): Promise<void> {
+			this.loading = true;
+
+			try {
+				this.product = await ProductsService.getProduct(productId);
+			} catch (err) {
+				this.isError = true;
+			} finally {
+				this.loading = false;
+			}
+		},
 		async deleteProduct(productId: number): Promise<void> {
 			try {
 				const token = useUserStore().token;

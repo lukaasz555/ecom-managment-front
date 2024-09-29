@@ -30,8 +30,6 @@ export class Filters {
 }
 
 export class ApiService {
-	baseUrl = 'http://localhost:4004/api/v1'; // todo: move to env
-
 	async getData<T>(
 		controller: string,
 		method: string,
@@ -39,19 +37,16 @@ export class ApiService {
 	): Promise<T> {
 		try {
 			const apiUrl = useRuntimeConfig().public.apiUrl;
-			const response: T = await $fetch(
-				`${this.baseUrl}/${controller}/${method}`,
-				{
-					method: 'GET',
-					headers: {
-						'Content-Type': 'application/json',
-						Authorization: `Bearer ${this.#token}`,
-					},
-					params: {
-						...filters,
-					},
-				}
-			);
+			const response: T = await $fetch(`${apiUrl}/${controller}/${method}`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${this.#token}`,
+				},
+				params: {
+					...filters,
+				},
+			});
 			return response;
 		} catch (err) {
 			console.log('getData error', err);
