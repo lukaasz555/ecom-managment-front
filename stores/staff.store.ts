@@ -29,5 +29,31 @@ export const useStaffStore = defineStore({
 				this.loading = false;
 			}
 		},
+		async deleteStaffMember(staffId: number): Promise<void> {
+			this.loading = true;
+			try {
+				await StaffService.deleteMember(staffId);
+				this.staffMembers = this.staffMembers.filter(
+					(member) => member.id !== staffId
+				);
+			} catch (err) {
+				this.isError = true;
+			} finally {
+				this.loading = false;
+			}
+		},
+		async updateStaffMember(staffMember: Staff): Promise<void> {
+			this.loading = true;
+			try {
+				const updatedMember = await StaffService.updateMember(staffMember);
+				this.staffMembers = this.staffMembers.map((member) =>
+					member.id === updatedMember.id ? updatedMember : member
+				);
+			} catch (err) {
+				this.isError = true;
+			} finally {
+				this.loading = false;
+			}
+		},
 	},
 });

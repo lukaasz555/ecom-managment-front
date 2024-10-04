@@ -13,7 +13,7 @@
 			</template>
 			<template v-if="column.field === 'id'" #body="{ data }">
 				<ActionButtons
-					@onDeleteClick="deleteMember"
+					@onDeleteClick="deleteMember(data.id)"
 					@onEditClick="editMember"
 				/>
 			</template>
@@ -25,9 +25,35 @@
 import { useStaffStore } from '~/stores/staff.store';
 import { staffTableColumns } from '../staff-table-columns';
 
+const emit = defineEmits<{
+	(e: 'deleteMember', memberId: number): void;
+	(e: 'editMember', memberId: number): void;
+}>();
+
+const confirm = useConfirm();
 const staffStore = useStaffStore();
 const { loading, staffMembers } = storeToRefs(staffStore);
+staffStore.fetchStaffMembers();
 
-function deleteMember(): void {}
-function editMember(): void {}
+function deleteMember(memberId: number) {
+	confirm.require({
+		header: 'Delete',
+		message: 'Are you sure you want to delete this staff member?',
+		acceptProps: {
+			label: 'Delete',
+			severity: 'danger',
+		},
+		accept: () => emit('deleteMember', memberId),
+		rejectProps: {
+			label: 'Cancel',
+			outlined: true,
+			severity: 'secondary',
+		},
+		reject: () => {},
+	});
+}
+
+function editMember(): void {
+	// ... dialog + form?
+}
 </script>

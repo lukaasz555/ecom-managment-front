@@ -9,10 +9,16 @@ export const staffTableColumns: TableColumn<Staff>[] = [
 	{
 		field: 'email',
 		header: 'Email',
+		style: {
+			'text-align': 'center',
+		},
 	},
 	{
 		field: 'role',
 		header: 'Role',
+		style: {
+			'text-align': 'center',
+		},
 	},
 	{
 		field: 'id',
